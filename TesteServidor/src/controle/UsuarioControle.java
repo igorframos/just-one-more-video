@@ -1,7 +1,7 @@
 package controle;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeSet;
 
 import modelo.Usuario;
 
@@ -23,7 +23,7 @@ public class UsuarioControle {
 		return instanciaUnica;
 	}
 	
-	public ArrayList<String> getVideosRecomendadosFromId(int id) {
+	public TreeSet<String> getVideosRecomendadosFromId(int id) {
 		// TODO ISSO É UM STUB!
 		if ( !existeCliente(id) ) {
 			criaUsuario(id);
@@ -32,7 +32,7 @@ public class UsuarioControle {
 		return usuarios.get(id).getVideosGostados();		
 	}
 	
-	public ArrayList<String> getVideosFromId(int id) {
+	public TreeSet<String> getVideosFromId(int id) {
 		// TODO ISSO É UM STUB!
 		if ( !existeCliente(id) ) {
 			criaUsuario(id);

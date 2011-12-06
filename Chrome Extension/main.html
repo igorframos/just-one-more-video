@@ -21,10 +21,11 @@
 
 <script>
 
-	// Carrega os vídeos armazenados localmente, que foram gostados
+	// Carrega os vídeos armazenados localmente, que foram gostados	
 	document.getElementById('quantosGostados').textContent = localStorage.NumVideos;
 	document.getElementById('ultimoVideoNome').innerHTML = '<a href = "' + localStorage.UltimoVideoLink + '" target = "novaAba"> ' + localStorage.UltimoVideoNome + '</a>';
 	
+	/*
 	var videosTitulos = JSON.parse( localStorage['videosGostados'] );
 	
 	for ( var i = 0; i < videosTitulos.length; i++ )
@@ -37,7 +38,51 @@
 		var linha = document.getElementById("fimVideosGostados");
 		document.body.insertBefore(objeto, linha);
 	}
+	*/
 	
+	// Pega os vídeos gostados do Servidor! (para não ter repetições e garantir youtube-only)
+	var req = new XMLHttpRequest();
+	req.open("GET", "http://localhost:8080/TesteServidor/ServletPedeGostados?id=" + localStorage.idUser, true);
+	
+	req.onreadystatechange = function() {
+		if (req.readyState == 4) {
+			//alert(reqRec.responseText);
+			
+			var msg = req.responseXML.getElementsByTagName("mensagem")[0].firstChild.nodeValue;
+			
+			if (msg == "sucesso") {
+				var videosRecomendados = req.responseXML.getElementsByTagName("video");
+				
+				// Mostrar no máximo os 5 últimos vídeos gostados!
+				var inicio = 0;
+				if ( videosRecomendados.length > 5 ) {
+					inicio = videosRecomendados.length - 5;
+				}
+				
+				for ( var i = inicio; i < videosRecomendados.length; i++ )
+				{		
+					var link = req.responseXML.getElementsByTagName("video")[i].firstChild.nodeValue;
+					
+					//alert(link);
+					
+					var objeto = document.createElement('span');
+					objeto.innerHTML = '<a href = "' + link + '" target = "novaAba" >' + (i+1) + ' - ' + link + '</a> <br>';
+					
+					var linha = document.getElementById("fimVideosGostados");
+					document.body.insertBefore(objeto, linha);
+				}
+			} else {
+				var objeto = document.createElement('div');
+				var conteudo = document.createTextNode( 'falha na recuperação dos vídeos gostados' );
+				objeto.appendChild(conteudo);
+
+				var linha = document.getElementById("fimVideosGostados");
+				document.body.insertBefore(objeto, linha);
+			}			
+		}
+	}
+	
+	req.send(null);
 	
 	// Pega recomendações de vídeos do servidor
 	// passando o id do "usuário"
@@ -46,6 +91,8 @@
 	
 	reqRec.onreadystatechange = function() {
 		if (reqRec.readyState == 4) {
+			//alert(reqRec.responseText);
+			
 			var msg = reqRec.responseXML.getElementsByTagName("mensagem")[0].firstChild.nodeValue;
 			
 			if (msg == "sucesso") {
@@ -55,11 +102,9 @@
 				{		
 					var link = reqRec.responseXML.getElementsByTagName("video")[i].firstChild.nodeValue;
 					
-					alert(link);
+					//alert(link);
 					
 					var objeto = document.createElement('span');
-					//var conteudo = document.createTextNode( (i+1) + ' - ' + link );			
-					//objeto.appendChild(conteudo);	
 					objeto.innerHTML = '<a href = "' + link + '" target = "novaAba" >' + (i+1) + ' - ' + link + '</a> <br>';
 					document.body.appendChild(objeto);
 				}

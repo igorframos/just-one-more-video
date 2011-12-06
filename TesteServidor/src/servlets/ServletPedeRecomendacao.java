@@ -2,7 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.TreeSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,7 +44,7 @@ public class ServletPedeRecomendacao extends HttpServlet {
 		if (idTemp != null) {
 			id = Integer.parseInt( idTemp );
 			
-			ArrayList<String> videos = controle.getVideosRecomendadosFromId(id);
+			TreeSet<String> videos = controle.getVideosRecomendadosFromId(id);
 			
 			PrintWriter out = response.getWriter();
 			

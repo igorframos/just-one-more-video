@@ -1,23 +1,23 @@
 package modelo;
 
-import java.util.ArrayList;
+import java.util.TreeSet;
 
 
 public class Usuario {
 
 	private int id;
-	private ArrayList<String> videosGostados;
+	private TreeSet<String> videosGostados;
 	
 	public Usuario(int id) {
 		this.id = id;
-		videosGostados = new ArrayList<String>();
+		videosGostados = new TreeSet<String>();
 	}
 	
 	public int getId() {
 		return this.id;
 	}
 	
-	public ArrayList<String> getVideosGostados() {
+	public TreeSet<String> getVideosGostados() {
 		return this.videosGostados;
 	}
 	
