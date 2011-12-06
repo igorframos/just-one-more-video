@@ -1,0 +1,126 @@
+<style>
+body {
+  overflow: hidden;
+  margin: 0px;
+  padding: 0px;
+  background: white;
+}
+
+div:first-child {
+  margin-top: 0px;
+}
+
+div {
+  cursor: pointer;
+  text-align: center;
+  padding: 1px 3px;
+  font-family: sans-serif;
+  font-size: 0.8em;
+  width: 100px;
+  margin-top: 1px;
+  background: #cccccc;
+}
+div:hover {
+  background: #aaaaaa;
+}
+#red {
+  border: 1px solid red;
+  color: red;
+}
+#blue {
+  border: 1px solid blue;
+  color: blue;
+}
+#green {
+  border: 1px solid green;
+  color: green;
+}
+#yellow {
+  border: 1px solid yellow;
+  color: yellow;
+}
+</style>
+<script>
+var req = new XMLHttpRequest();
+
+function click(color) {
+  chrome.tabs.executeScript(null,
+      {code:"document.body.style.backgroundColor='" + color.id + "'"});
+  window.close();
+}
+
+function alteraAba(color) {
+	chrome.tabs.getSelected(null, function(tab) {
+		chrome.tabs.update(tab.id, {url:"http://www.google.com"});
+	});
+}
+
+function abreAba() {
+	chrome.tabs.create( {url:"http://www.google.com"} );
+}
+
+function acessaPaginaPessoal() {
+	chrome.tabs.create( {url:"main.html"} );
+}
+
+function salvaVideo() {
+	chrome.tabs.getSelected(null, function(tab) 
+		{
+			if(!localStorage.NumVideos) {
+				localStorage.NumVideos = 0;
+			}
+			localStorage.NumVideos = parseInt(localStorage.NumVideos) + 1;
+			
+			var videosTitulos = [];
+			if(localStorage['videosGostados']) {
+				videosTitulos = JSON.parse( localStorage['videosGostados'] );
+			}
+			
+			videosTitulos.push( tab.title );
+			
+			localStorage['videosGostados'] = JSON.stringify(videosTitulos);
+			
+			localStorage.UltimoVideoNome = tab.title;
+			localStorage.UltimoVideoLink = tab.url;
+			
+			req.open(
+				    "GET",
+				    "http://localhost:8080/TesteServidor/ServletRecebeVideoGostado?" +
+				        "acao=gostar&" +
+				        "cod=" + tab.url,
+				    true);
+			req.onload = carregaMensagem;
+			req.send(null);
+			
+		}
+	);
+}
+
+function carregaMensagem() 
+{
+	//var msg = req.responseXML.getElementsByTagName("mensagem")[0].childNodes[0].nodeValue;
+	var msg = req.responseText;
+	
+	//var objeto = document.createElement('div');
+	//var conteudo = document.createTextNode( msg );	
+	//objeto.appendChild(conteudo);	
+	//document.body.appendChild(objeto);
+	
+	document.getElementById("yellow").textContent = msg;
+}
+
+// Pede pro servidor um ID disponível pro cara se cadastrar (Só se ele não tiver!)
+if(!localStorage.id) {
+	req.open("GET", "http://localhost:8080/TesteServidor/ServletPedeId?", true);
+	
+	var id = req.responseText;
+	localStorage.id = id;
+	
+	req.send(null);
+}
+</script>
+
+<div onclick="abreAba()" id="red">Nova Aba</div>
+<div onclick="acessaPaginaPessoal()" id="blue">Home</div>
+<div onclick="salvaVideo()" id="green">Gostei</div>
+<div onclick="click(this)" id="yellow">yellow</div>

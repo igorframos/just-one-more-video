@@ -1,0 +1,63 @@
+<html>
+<head>
+	<title> 
+		Sua página de recomendações
+	</title>
+</head>
+
+<body bgcolor = "white">
+	<h4> Vídeos que você gostou: </h4>
+		<span id = "quantosGostados"> desconhecido. </span>
+		<br>
+		<span id = "ultimoVideoNome"> desconhecido. </span>
+		<br>
+		<br>
+	<hr id = "fimVideosGostados">
+	
+	<h4> Vídeos recomendados: </h4>
+</body>
+
+</html>
+
+<script>
+	// Carrega os vídeos armazenados localmente, que foram gostados
+	document.getElementById('quantosGostados').textContent = localStorage.NumVideos;
+	document.getElementById('ultimoVideoNome').innerHTML = '<a href = "' + localStorage.UltimoVideoLink + '" target = "novaAba"> ' + localStorage.UltimoVideoNome + '</a>';
+	
+	var videosTitulos = JSON.parse( localStorage['videosGostados'] );
+	
+	for ( var i = 0; i < videosTitulos.length; i++ )
+	{
+		var objeto = document.createElement('div');
+		var conteudo = document.createTextNode( (i+1) + ' - ' + videosTitulos[i] );
+		
+		objeto.appendChild(conteudo);
+		
+		var linha = document.getElementById("fimVideosGostados");
+		document.body.insertBefore(objeto, linha);
+	}
+	
+	
+	// Pega recomendações de vídeos do servidor
+	// passando o id do "usuário"
+	var req = new XMLHttpRequest();
+	req.open("GET", "http://localhost:8080/TesteServidor/ServletPedeRecomendacao?id=" + localStorage.id, true);
+	req.onload = carregaRecomendacoes;
+	
+	function carregaRecomendacoes() 
+	{
+		var videosRecomendados = req.responseXML.getElementsByTagName("video");
+		
+		for ( var i = 0; i < videosRecomendados.length; i++ )
+		{		
+			var msg = req.responseXML.getElementsByTagName("video")[i].childNodes[0].nodeValue;
+			
+			var objeto = document.createElement('div');
+			//var conteudo = document.createTextNode( (i+1) + ' - ' + msg );			
+			//objeto.appendChild(conteudo);	
+			objeto.innerHTML = '<a href = "' + msg + '" target = "novaAba"> </a>'
+			document.body.appendChild(objeto);
+		}
+	}
+	
+</script>

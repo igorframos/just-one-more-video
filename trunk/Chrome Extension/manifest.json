@@ -1,0 +1,13 @@
+{
+  "name": "JUST ONE MORE VIDEO",
+  "version": "1.0",
+  "description": "Trabalho de Recomendacao de Recuperacao da Informacao 2011/2.",
+  "browser_action": {
+    "default_icon": "images/icon.png",
+	"popup"		  : "popup.html"
+  },
+  "permissions": [
+    "tabs",
+	"http://www.youtube.com/*"
+  ]
+}
