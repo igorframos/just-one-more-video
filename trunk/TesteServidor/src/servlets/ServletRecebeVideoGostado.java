@@ -35,20 +35,26 @@ public class ServletRecebeVideoGostado extends HttpServlet {
 		
 		String acao = request.getParameter("acao");
 		String video = request.getParameter("cod");
+		int id = Integer.parseInt( request.getParameter("id") );
 		
-		if ( (acao != null) && (video != null) ) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setContentType("text/xml");
+		
+		if ( (acao != null) && (video != null) && (id > 0) ) {
 			
-			if ( acao.equalsIgnoreCase("gostar") ) {				
-				controle.insereVideoGostado(0, video);
+			if ( controle.existeCliente(id) ) {
+				// TODO um filtro que só permite vídeos do iutubil
 				
-				response.setContentType("text/html");
-				response.getWriter().write("Adicionado!");
-			} else {
-				
-			}			
+				if ( acao.equalsIgnoreCase("gostar") ) {				
+					controle.insereVideoGostado(0, video);
+					
+					response.getWriter().write("<mensagem>Adicionado!</mensagem>");
+				} else {
+					// TODO implementar o que fazer com "não gostar"
+				}
+			}						
 		} else {
-			response.setContentType("text/html");
-			response.getWriter().write("Faltou algo!");
+			response.getWriter().write("<mensagem>Faltou algo!</mensagem>");
 		}
 		
 	}

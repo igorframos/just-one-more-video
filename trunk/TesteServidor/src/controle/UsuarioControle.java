@@ -25,7 +25,7 @@ public class UsuarioControle {
 	
 	public ArrayList<String> getVideosRecomendadosFromId(int id) {
 		// TODO ISSO É UM STUB!
-		if ( !usuarios.containsKey(id) ) {
+		if ( !existeCliente(id) ) {
 			criaUsuario(id);
 		}
 		
@@ -35,7 +35,7 @@ public class UsuarioControle {
 	
 	public ArrayList<String> getVideosFromId(int id) {
 		// TODO ISSO É UM STUB!
-		if ( !usuarios.containsKey(id) ) {
+		if ( !existeCliente(id) ) {
 			criaUsuario(id);
 		}
 		
@@ -48,7 +48,7 @@ public class UsuarioControle {
 	}
 	
 	public void insereVideoGostado(int id, String video) {
-		if ( !usuarios.containsKey(id) ) {
+		if ( !existeCliente(id) ) {
 			criaUsuario(id);
 		}
 		
@@ -58,5 +58,12 @@ public class UsuarioControle {
 	public int geraId() {
 		ultimoId++;
 		return ultimoId;
+	}
+	
+	public boolean existeCliente(int id) {
+		if ( !usuarios.containsKey(id) ) {
+			return false;
+		}
+		return true;
 	}
 }

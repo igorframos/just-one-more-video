@@ -41,8 +41,6 @@ div:hover {
 }
 </style>
 <script>
-var req = new XMLHttpRequest();
-
 function click(color) {
   chrome.tabs.executeScript(null,
       {code:"document.body.style.backgroundColor='" + color.id + "'"});
@@ -64,6 +62,8 @@ function acessaPaginaPessoal() {
 }
 
 function salvaVideo() {
+	var req = new XMLHttpRequest();
+	
 	chrome.tabs.getSelected(null, function(tab) 
 		{
 			if(!localStorage.NumVideos) {
@@ -88,35 +88,37 @@ function salvaVideo() {
 				    "http://localhost:8080/TesteServidor/ServletRecebeVideoGostado?" +
 				        "acao=gostar&" +
 				        "cod=" + tab.url,
-				    true);
-			req.onload = carregaMensagem;
+				    false);
+
+			req.onreadystatechange = function() {
+				if (req.readyState == 4) {
+					var msg = req.responseXML.getElementsByTagName("mensagem")[0].firstChild.nodeValue;
+					document.getElementById("yellow").textContent = msg;
+				}
+			}
+			
 			req.send(null);
 			
 		}
 	);
 }
 
-function carregaMensagem() 
-{
-	//var msg = req.responseXML.getElementsByTagName("mensagem")[0].childNodes[0].nodeValue;
-	var msg = req.responseText;
-	
-	//var objeto = document.createElement('div');
-	//var conteudo = document.createTextNode( msg );	
-	//objeto.appendChild(conteudo);	
-	//document.body.appendChild(objeto);
-	
-	document.getElementById("yellow").textContent = msg;
-}
-
 // Pede pro servidor um ID disponível pro cara se cadastrar (Só se ele não tiver!)
-if(!localStorage.id) {
-	req.open("POST", "http://localhost:8080/TesteServidor/ServletPedeId", true);
+if(!localStorage.idUser) {
+	var reqId = new XMLHttpRequest();
 	
-	var id = req.responseText;
-	localStorage.id = id;
+	reqId.open("POST", "http://localhost:8080/TesteServidor/ServletPedeId", false);
 	
-	req.send(null);
+	reqId.onreadystatechange = function() {
+		if (reqId.readyState == 4) {
+			var idUser = reqId.responseXML.getElementsByTagName("id")[0].firstChild.nodeValue;
+			localStorage.idUser = idUser;
+			alert(localStorage.idUser);
+			document.getElementById("yellow").textContent = localStorage.idUser;
+		}
+	}
+	
+	reqId.send(null);
 }
 </script>
 

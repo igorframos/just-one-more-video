@@ -43,8 +43,13 @@ public class ServletPedeId extends HttpServlet {
 		
 		System.out.println("Mandei o ID " + id + " !");
 		
-		response.setContentType("text/html");
-		response.getWriter().write(id);
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setContentType("text/xml");
+		response.getWriter().write("<id>" + id + "</id>");
+		response.getWriter().flush();
+		response.getWriter().close();
+		
+		System.out.println(response.isCommitted());
 	}
 
 }
