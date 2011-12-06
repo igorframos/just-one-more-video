@@ -20,6 +20,9 @@
 </html>
 
 <script>
+	// Mostra o id do usuário (debugging)
+	alert(localStorage.id);
+
 	// Carrega os vídeos armazenados localmente, que foram gostados
 	document.getElementById('quantosGostados').textContent = localStorage.NumVideos;
 	document.getElementById('ultimoVideoNome').innerHTML = '<a href = "' + localStorage.UltimoVideoLink + '" target = "novaAba"> ' + localStorage.UltimoVideoNome + '</a>';
@@ -41,8 +44,7 @@
 	// Pega recomendações de vídeos do servidor
 	// passando o id do "usuário"
 	var req = new XMLHttpRequest();
-	//req.open("GET", "http://localhost:8080/TesteServidor/ServletPedeRecomendacao?id=" + localStorage.id, true);
-	req.open("GET", "http://localhost:8080/TesteServidor/ServletPedeRecomendacao?" + "id=0", true);
+	req.open("GET", "http://localhost:8080/TesteServidor/ServletPedeRecomendacao?id=" + localStorage.id, true);
 	req.onload = carregaRecomendacoes;
 	
 	function carregaRecomendacoes() 
