@@ -29,8 +29,7 @@ public class UsuarioControle {
 			criaUsuario(id);
 		}
 		
-		return usuarios.get(id).getVideosGostados();
-		
+		return usuarios.get(id).getVideosGostados();		
 	}
 	
 	public ArrayList<String> getVideosFromId(int id) {

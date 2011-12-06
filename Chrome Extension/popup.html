@@ -86,9 +86,9 @@ function salvaVideo() {
 			req.open(
 				    "GET",
 				    "http://localhost:8080/TesteServidor/ServletRecebeVideoGostado?" +
-				        "acao=gostar&" +
-				        "cod=" + tab.url,
-				    false);
+				        "acao=gostar&" + "id=" + localStorage.idUser +
+				        "&cod=" + tab.url,
+				    true);
 
 			req.onreadystatechange = function() {
 				if (req.readyState == 4) {
@@ -107,7 +107,7 @@ function salvaVideo() {
 if(!localStorage.idUser) {
 	var reqId = new XMLHttpRequest();
 	
-	reqId.open("POST", "http://localhost:8080/TesteServidor/ServletPedeId", false);
+	reqId.open("POST", "http://localhost:8080/TesteServidor/ServletPedeId", true);
 	
 	reqId.onreadystatechange = function() {
 		if (reqId.readyState == 4) {

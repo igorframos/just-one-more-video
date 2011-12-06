@@ -1,6 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,9 +35,30 @@ public class ServletPedeRecomendacao extends HttpServlet {
 		
 		System.out.println("Estou pedindo recomendações!");
 		
-		int id = Integer.parseInt( request.getParameter("id") );
+		String idTemp = request.getParameter("id");
+		int id;
 		
-		controle.getVideosRecomendadosFromId(id);
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setContentType("text/xml");
+		
+		if (idTemp != null) {
+			id = Integer.parseInt( idTemp );
+			
+			ArrayList<String> videos = controle.getVideosRecomendadosFromId(id);
+			
+			PrintWriter out = response.getWriter();
+			
+			out.println("<resposta>");
+			out.println("<mensagem>sucesso</mensagem>");
+			
+			for (String link : videos) {
+				out.println("<video>" + link + "</video>");
+			}
+			
+			out.println("</resposta>");
+		} else {
+			response.getWriter().write("<mensagem>falha</mensagem>");
+		}
 	}
 
 	/**

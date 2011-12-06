@@ -37,6 +37,8 @@ public class ServletRecebeVideoGostado extends HttpServlet {
 		String video = request.getParameter("cod");
 		int id = Integer.parseInt( request.getParameter("id") );
 		
+		System.out.println("id = " + id);
+		
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setContentType("text/xml");
 		
@@ -46,7 +48,7 @@ public class ServletRecebeVideoGostado extends HttpServlet {
 				// TODO um filtro que só permite vídeos do iutubil
 				
 				if ( acao.equalsIgnoreCase("gostar") ) {				
-					controle.insereVideoGostado(0, video);
+					controle.insereVideoGostado(id, video);
 					
 					response.getWriter().write("<mensagem>Adicionado!</mensagem>");
 				} else {
