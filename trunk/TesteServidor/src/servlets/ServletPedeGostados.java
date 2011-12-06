@@ -1,6 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.TreeSet;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,16 +13,16 @@ import javax.servlet.http.HttpServletResponse;
 import controle.UsuarioControle;
 
 /**
- * Servlet implementation class ServletRecebeVideoGostado
+ * Servlet implementation class ServletPedeGostados
  */
-@WebServlet("/ServletRecebeVideoGostado")
-public class ServletRecebeVideoGostado extends HttpServlet {
+@WebServlet("/ServletPedeGostados")
+public class ServletPedeGostados extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ServletRecebeVideoGostado() {
+    public ServletPedeGostados() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,42 +31,34 @@ public class ServletRecebeVideoGostado extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		UsuarioControle controle = UsuarioControle.getInstance();
 		
-		System.out.println("Recebi um vídeo!");
+		System.out.println("Estou pedindo meus vídeos gostados!!");
 		
-		String acao = request.getParameter("acao");
-		String video = request.getParameter("cod");
-		int id = Integer.parseInt( request.getParameter("id") );
-		
-		System.out.println("id = " + id);
+		String idTemp = request.getParameter("id");
+		int id;
 		
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setContentType("text/xml");
 		
-		if ( (acao != null) && (video != null) && (id > 0) ) {
+		if (idTemp != null) {
+			id = Integer.parseInt( idTemp );
 			
-			// Filtro de links
-			String temp[] = video.split("\\.");
-			System.out.println(video);
-			if( temp[1].equals("youtube") ) {
-				
-				if ( acao.equalsIgnoreCase("gostar") ) {				
-					controle.insereVideoGostado(id, video);
-					
-					response.getWriter().write("<mensagem>Adicionado!</mensagem>");
-				} else {
-					// TODO implementar o que fazer com "não gostar"
-				}
-				
-			} else {
-				response.getWriter().write("<mensagem>Não é do Youtube!</mensagem>");
+			TreeSet<String> videos = controle.getVideosFromId(id);
+			
+			PrintWriter out = response.getWriter();
+			
+			out.println("<resposta>");
+			out.println("<mensagem>sucesso</mensagem>");
+			
+			for (String link : videos) {
+				out.println("<video>" + link + "</video>");
 			}
+			
+			out.println("</resposta>");
 		} else {
-			response.getWriter().write("<mensagem>Faltou algo!</mensagem>");
+			response.getWriter().write("<mensagem>falha</mensagem>");
 		}
-		
 	}
 
 	/**
