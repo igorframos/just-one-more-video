@@ -20,8 +20,6 @@
 </html>
 
 <script>
-	// Mostra o id do usuário (debugging)
-	alert(localStorage.id);
 
 	// Carrega os vídeos armazenados localmente, que foram gostados
 	document.getElementById('quantosGostados').textContent = localStorage.NumVideos;
@@ -43,24 +41,37 @@
 	
 	// Pega recomendações de vídeos do servidor
 	// passando o id do "usuário"
-	var req = new XMLHttpRequest();
-	req.open("GET", "http://localhost:8080/TesteServidor/ServletPedeRecomendacao?id=" + localStorage.id, true);
-	req.onload = carregaRecomendacoes;
+	var reqRec = new XMLHttpRequest();
+	reqRec.open("GET", "http://localhost:8080/TesteServidor/ServletPedeRecomendacao?id=" + localStorage.idUser, true);
 	
-	function carregaRecomendacoes() 
-	{
-		var videosRecomendados = req.responseXML.getElementsByTagName("video");
-		
-		for ( var i = 0; i < videosRecomendados.length; i++ )
-		{		
-			var msg = req.responseXML.getElementsByTagName("video")[i].childNodes[0].nodeValue;
+	reqRec.onreadystatechange = function() {
+		if (reqRec.readyState == 4) {
+			var msg = reqRec.responseXML.getElementsByTagName("mensagem")[0].firstChild.nodeValue;
 			
-			var objeto = document.createElement('div');
-			//var conteudo = document.createTextNode( (i+1) + ' - ' + msg );			
-			//objeto.appendChild(conteudo);	
-			objeto.innerHTML = '<a href = "' + msg + '" target = "novaAba"> </a>'
-			document.body.appendChild(objeto);
+			if (msg == "sucesso") {
+				var videosRecomendados = reqRec.responseXML.getElementsByTagName("video");
+				
+				for ( var i = 0; i < videosRecomendados.length; i++ )
+				{		
+					var link = reqRec.responseXML.getElementsByTagName("video")[i].firstChild.nodeValue;
+					
+					alert(link);
+					
+					var objeto = document.createElement('span');
+					//var conteudo = document.createTextNode( (i+1) + ' - ' + link );			
+					//objeto.appendChild(conteudo);	
+					objeto.innerHTML = '<a href = "' + link + '" target = "novaAba" >' + (i+1) + ' - ' + link + '</a> <br>';
+					document.body.appendChild(objeto);
+				}
+			} else {
+				var objeto = document.createElement('div');
+				var conteudo = document.createTextNode( 'falha na recuperação dos vídeos recomendados' );
+				objeto.appendChild(conteudo);
+				document.body.appendChild(objeto);
+			}			
 		}
 	}
+	
+	reqRec.send(null);
 	
 </script>
