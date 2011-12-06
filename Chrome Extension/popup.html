@@ -111,7 +111,7 @@ function carregaMensagem()
 
 // Pede pro servidor um ID disponível pro cara se cadastrar (Só se ele não tiver!)
 if(!localStorage.id) {
-	req.open("GET", "http://localhost:8080/TesteServidor/ServletPedeId?", true);
+	req.open("POST", "http://localhost:8080/TesteServidor/ServletPedeId", true);
 	
 	var id = req.responseText;
 	localStorage.id = id;

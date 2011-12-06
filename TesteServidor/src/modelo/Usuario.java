@@ -5,16 +5,16 @@ import java.util.ArrayList;
 
 public class Usuario {
 
-	private String ip;
+	private int id;
 	private ArrayList<String> videosGostados;
 	
-	public Usuario(String ip) {
-		this.ip = ip;
+	public Usuario(int id) {
+		this.id = id;
 		videosGostados = new ArrayList<String>();
 	}
 	
-	public String getIp() {
-		return this.ip;
+	public int getId() {
+		return this.id;
 	}
 	
 	public ArrayList<String> getVideosGostados() {
