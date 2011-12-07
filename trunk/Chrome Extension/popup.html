@@ -66,6 +66,7 @@ function salvaVideo() {
 	
 	chrome.tabs.getSelected(null, function(tab) 
 		{
+			/*
 			if(!localStorage.NumVideos) {
 				localStorage.NumVideos = 0;
 			}
@@ -82,6 +83,7 @@ function salvaVideo() {
 			
 			localStorage.UltimoVideoNome = tab.title;
 			localStorage.UltimoVideoLink = tab.url;
+			*/
 			
 			req.open(
 				    "GET",

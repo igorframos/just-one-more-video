@@ -53,6 +53,10 @@ public class ServletPedeGostados extends HttpServlet {
 			
 			for (String link : videos) {
 				out.println("<video>" + link + "</video>");
+				
+				String temp[] = link.split("=");
+				
+				out.println("<thumb>" + temp[1] + "</thumb>");
 			}
 			
 			out.println("</resposta>");
