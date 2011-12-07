@@ -24,22 +24,19 @@ public class UsuarioControle {
 	}
 	
 	public TreeSet<String> getVideosRecomendadosFromId(int id) {
-		// TODO ISSO É UM STUB!
+		if ( !existeCliente(id) ) {
+			criaUsuario(id);
+		}
+		
+		return usuarios.get(id).getVideosRecomendados();		
+	}
+	
+	public TreeSet<String> getVideosFromId(int id) {
 		if ( !existeCliente(id) ) {
 			criaUsuario(id);
 		}
 		
 		return usuarios.get(id).getVideosGostados();		
-	}
-	
-	public TreeSet<String> getVideosFromId(int id) {
-		// TODO ISSO É UM STUB!
-		if ( !existeCliente(id) ) {
-			criaUsuario(id);
-		}
-		
-		return usuarios.get(id).getVideosGostados();
-		
 	}
 	
 	public void criaUsuario(int id) {
@@ -51,7 +48,11 @@ public class UsuarioControle {
 			criaUsuario(id);
 		}
 		
-		usuarios.get(id).acrescenteVideoGostado(video);
+		boolean recalcula = usuarios.get(id).acrescenteVideoGostado(video);
+		
+		if(recalcula) {
+			recalculaRatings(id);
+		}
 	}
 	
 	public int geraId() {
@@ -64,5 +65,19 @@ public class UsuarioControle {
 			return false;
 		}
 		return true;
+	}
+	
+	public void recalculaRatings(int id) {
+		TreeSet<Integer> ids = new TreeSet<Integer>();
+		ids.addAll(usuarios.keySet());
+		
+		Usuario recalculado = usuarios.get(id);
+		
+		for (Integer idOutro : ids) {
+			if(idOutro != id) {
+				Usuario outro = usuarios.get(idOutro);
+				recalculado.calculaRating(outro);
+			}
+		}
 	}
 }

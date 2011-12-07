@@ -44,20 +44,35 @@ public class ServletPedeRecomendacao extends HttpServlet {
 		if (idTemp != null) {
 			id = Integer.parseInt( idTemp );
 			
-			TreeSet<String> videos = controle.getVideosRecomendadosFromId(id);
-			
 			PrintWriter out = response.getWriter();
 			
 			out.println("<resposta>");
 			out.println("<mensagem>sucesso</mensagem>");
 			
-			for (String link : videos) {
-				out.println("<video>" + link + "</video>");
+			TreeSet<String> videos = controle.getVideosRecomendadosFromId(id);
+			
+			if (videos.size() > 0) {
+				for (String link : videos) {
+					out.println("<video>" + link + "</video>");
+					
+					String temp[] = link.split("=");
+					
+					out.println("<thumb>" + temp[1] + "</thumb>");
+				}
+			} else {
+				out.println("<aviso>Ainda não há nenhum vídeo recomendado para você</aviso>");
 			}
+			
 			
 			out.println("</resposta>");
 		} else {
-			response.getWriter().write("<mensagem>falha</mensagem>");
+			PrintWriter out = response.getWriter();
+			
+			out.println("<resposta>");
+			out.println("<mensagem>falha</mensagem>");
+			
+			out.println("<aviso>Falha na recuperação dos vídeos recomendados a você</aviso>");
+			out.println("</resposta>");
 		}
 	}
 

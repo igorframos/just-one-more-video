@@ -7,10 +7,6 @@
 
 <body bgcolor = "white">
 	<h4> Vídeos que você gostou: </h4>
-		<span id = "quantosGostados"> desconhecido. </span>
-		<br>
-		<span id = "ultimoVideoNome"> desconhecido. </span>
-		<br>
 		<br>
 	<hr id = "fimVideosGostados">
 	
@@ -22,24 +18,9 @@
 <script>
 
 	// Carrega os vídeos armazenados localmente, que foram gostados	
-	document.getElementById('quantosGostados').textContent = localStorage.NumVideos;
-	document.getElementById('ultimoVideoNome').innerHTML = '<a href = "' + localStorage.UltimoVideoLink + '" target = "novaAba"> ' + localStorage.UltimoVideoNome + '</a>';
-	
-	/*
-	var videosTitulos = JSON.parse( localStorage['videosGostados'] );
-	
-	for ( var i = 0; i < videosTitulos.length; i++ )
-	{
-		var objeto = document.createElement('div');
-		var conteudo = document.createTextNode( (i+1) + ' - ' + videosTitulos[i] );
+	//document.getElementById('quantosGostados').textContent = localStorage.NumVideos;
+	//document.getElementById('ultimoVideoNome').innerHTML = '<a href = "' + localStorage.UltimoVideoLink + '" target = "novaAba"> ' + localStorage.UltimoVideoNome + '</a>';
 		
-		objeto.appendChild(conteudo);
-		
-		var linha = document.getElementById("fimVideosGostados");
-		document.body.insertBefore(objeto, linha);
-	}
-	*/
-	
 	// Pega os vídeos gostados do Servidor! (para não ter repetições e garantir youtube-only)
 	var req = new XMLHttpRequest();
 	req.open("GET", "http://localhost:8080/TesteServidor/ServletPedeGostados?id=" + localStorage.idUser, true);
@@ -62,11 +43,19 @@
 				for ( var i = inicio; i < videosRecomendados.length; i++ )
 				{		
 					var link = req.responseXML.getElementsByTagName("video")[i].firstChild.nodeValue;
+					var cod = req.responseXML.getElementsByTagName("thumb")[i].firstChild.nodeValue;
 					
 					//alert(link);
 					
-					var objeto = document.createElement('span');
-					objeto.innerHTML = '<a href = "' + link + '" target = "novaAba" >' + (i+1) + ' - ' + link + '</a> <br>';
+					var objeto = document.createElement('div');
+					
+					var conteudoLink = document.createElement('span');					
+					conteudoLink.innerHTML = '<a href = "' + link + '" target = "novaAba" >' + (i+1) + ' - ' + link + '</a> <br>';
+					objeto.appendChild(conteudoLink);
+					
+					var conteudoImg = document.createElement('span');
+					conteudoImg.innerHTML = '<a href = "' + link + '" target = "novaAba" >' + '<img src = "http://i1.ytimg.com/vi/' + cod + '/default.jpg" />' + '</a> <br><br>';
+					objeto.appendChild(conteudoImg);
 					
 					var linha = document.getElementById("fimVideosGostados");
 					document.body.insertBefore(objeto, linha);
@@ -101,16 +90,32 @@
 				for ( var i = 0; i < videosRecomendados.length; i++ )
 				{		
 					var link = reqRec.responseXML.getElementsByTagName("video")[i].firstChild.nodeValue;
+					var cod = req.responseXML.getElementsByTagName("thumb")[i].firstChild.nodeValue;
 					
 					//alert(link);
 					
-					var objeto = document.createElement('span');
-					objeto.innerHTML = '<a href = "' + link + '" target = "novaAba" >' + (i+1) + ' - ' + link + '</a> <br>';
+					var objeto = document.createElement('div');
+					
+					var conteudoLink = document.createElement('span');					
+					conteudoLink.innerHTML = '<a href = "' + link + '" target = "novaAba" >' + (i+1) + ' - ' + link + '</a> <br>';
+					objeto.appendChild(conteudoLink);
+					
+					var conteudoImg = document.createElement('span');
+					conteudoImg.innerHTML = '<a href = "' + link + '" target = "novaAba" >' + '<img src = "http://i1.ytimg.com/vi/' + cod + '/default.jpg" />' + '</a> <br><br>';
+					objeto.appendChild(conteudoImg);
+					
 					document.body.appendChild(objeto);
 				}
+				
+				var objeto = document.createElement('div');
+				var aviso = reqRec.responseXML.getElementsByTagName("aviso")[0].firstChild.nodeValue;
+				var conteudo = document.createTextNode( aviso );
+				objeto.appendChild(conteudo);
+				document.body.appendChild(objeto);
 			} else {
 				var objeto = document.createElement('div');
-				var conteudo = document.createTextNode( 'falha na recuperação dos vídeos recomendados' );
+				var aviso = reqRec.responseXML.getElementsByTagName("aviso")[0].firstChild.nodeValue;
+				var conteudo = document.createTextNode( aviso );
 				objeto.appendChild(conteudo);
 				document.body.appendChild(objeto);
 			}			
