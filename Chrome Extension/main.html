@@ -1,27 +1,27 @@
 <html>
 <head>
 	<title> 
-		Sua página de recomendações
+		Sua pÃ¡gina de recomendaÃ§Ãµes
 	</title>
 </head>
 
 <body bgcolor = "white">
-	<h4> Vídeos que você gostou: </h4>
+	<h4> Ãšltimos vÃ­deos que vocÃª gostou: </h4>
 		<br>
 	<hr id = "fimVideosGostados">
 	
-	<h4> Vídeos recomendados: </h4>
+	<h4> VÃ­deos recomendados: </h4>
 </body>
 
 </html>
 
 <script>
 
-	// Carrega os vídeos armazenados localmente, que foram gostados	
+	// Carrega os vÃ­deos armazenados localmente, que foram gostados	
 	//document.getElementById('quantosGostados').textContent = localStorage.NumVideos;
 	//document.getElementById('ultimoVideoNome').innerHTML = '<a href = "' + localStorage.UltimoVideoLink + '" target = "novaAba"> ' + localStorage.UltimoVideoNome + '</a>';
 		
-	// Pega os vídeos gostados do Servidor! (para não ter repetições e garantir youtube-only)
+	// Pega os vÃ­deos gostados do Servidor! (para nï¿½o ter repetiï¿½ï¿½es e garantir youtube-only)
 	var req = new XMLHttpRequest();
 	req.open("GET", "http://localhost:8080/TesteServidor/ServletPedeGostados?id=" + localStorage.idUser, true);
 	
@@ -34,7 +34,7 @@
 			if (msg == "sucesso") {
 				var videosRecomendados = req.responseXML.getElementsByTagName("video");
 				
-				// Mostrar no máximo os 5 últimos vídeos gostados!
+				// Mostrar no mï¿½ximo os 5 ï¿½ltimos vï¿½deos gostados!
 				var inicio = 0;
 				if ( videosRecomendados.length > 5 ) {
 					inicio = videosRecomendados.length - 5;
@@ -62,7 +62,7 @@
 				}
 			} else {
 				var objeto = document.createElement('div');
-				var conteudo = document.createTextNode( 'falha na recuperação dos vídeos gostados' );
+				var conteudo = document.createTextNode( 'falha na recuperaÃ§Ã£o dos vÃ­deos gostados' );
 				objeto.appendChild(conteudo);
 
 				var linha = document.getElementById("fimVideosGostados");
@@ -73,8 +73,8 @@
 	
 	req.send(null);
 	
-	// Pega recomendações de vídeos do servidor
-	// passando o id do "usuário"
+	// Pega recomendaï¿½ï¿½es de vï¿½deos do servidor
+	// passando o id do "usuï¿½rio"
 	var reqRec = new XMLHttpRequest();
 	reqRec.open("GET", "http://localhost:8080/TesteServidor/ServletPedeRecomendacao?id=" + localStorage.idUser, true);
 	
@@ -90,7 +90,7 @@
 				for ( var i = 0; i < videosRecomendados.length; i++ )
 				{		
 					var link = reqRec.responseXML.getElementsByTagName("video")[i].firstChild.nodeValue;
-					var cod = req.responseXML.getElementsByTagName("thumb")[i].firstChild.nodeValue;
+					var cod = reqRec.responseXML.getElementsByTagName("thumb")[i].firstChild.nodeValue;
 					
 					//alert(link);
 					
