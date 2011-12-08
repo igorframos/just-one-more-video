@@ -54,7 +54,8 @@ public class ServletRecebeVideoGostado extends HttpServlet {
 					
 					response.getWriter().write("<mensagem>Adicionado!</mensagem>");
 				} else {
-					// TODO implementar o que fazer com "não gostar"
+					controle.insereVideoNaoGostado(id, video);
+					response.getWriter().write("<mensagem>Adicionado!</mensagem>");
 				}
 				
 			} else {

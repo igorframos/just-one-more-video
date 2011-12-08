@@ -61,34 +61,15 @@ function acessaPaginaPessoal() {
 	chrome.tabs.create( {url:"main.html"} );
 }
 
-function salvaVideo() {
+function salvaVideo(acao) {
 	var req = new XMLHttpRequest();
 	
 	chrome.tabs.getSelected(null, function(tab) 
 		{
-			/*
-			if(!localStorage.NumVideos) {
-				localStorage.NumVideos = 0;
-			}
-			localStorage.NumVideos = parseInt(localStorage.NumVideos) + 1;
-			
-			var videosTitulos = [];
-			if(localStorage['videosGostados']) {
-				videosTitulos = JSON.parse( localStorage['videosGostados'] );
-			}
-			
-			videosTitulos.push( tab.title );
-			
-			localStorage['videosGostados'] = JSON.stringify(videosTitulos);
-			
-			localStorage.UltimoVideoNome = tab.title;
-			localStorage.UltimoVideoLink = tab.url;
-			*/
-			
 			req.open(
 				    "GET",
 				    "http://localhost:8080/TesteServidor/ServletRecebeVideoGostado?" +
-				        "acao=gostar&" + "id=" + localStorage.idUser +
+				        "acao=" + acao + "&id=" + localStorage.idUser +
 				        "&cod=" + tab.url,
 				    true);
 
@@ -124,7 +105,7 @@ if(!localStorage.idUser) {
 }
 </script>
 
-<div onclick="abreAba()" id="red">Nova Aba</div>
 <div onclick="acessaPaginaPessoal()" id="blue">Home</div>
-<div onclick="salvaVideo()" id="green">Gostei</div>
+<div onclick="salvaVideo('gostar')" id="green">Gostei</div>
+<div onclick="salvaVideo('naogostar')" id="red">Não Gostei</div>
 <div onclick="click(this)" id="yellow">yellow</div>
