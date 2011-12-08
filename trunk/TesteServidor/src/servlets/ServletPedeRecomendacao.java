@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controle.ThreadControle;
 import controle.UsuarioControle;
 
 /**
@@ -32,8 +33,9 @@ public class ServletPedeRecomendacao extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UsuarioControle controle = UsuarioControle.getInstance();
+		ThreadControle.getInstance();
 		
-		System.out.println("Estou pedindo recomendações!");
+		System.out.println("Estou pedindo recomendaÃ§Ãµes!");
 		
 		String idTemp = request.getParameter("id");
 		int id;
@@ -60,7 +62,7 @@ public class ServletPedeRecomendacao extends HttpServlet {
 					out.println("<thumb>" + temp[1] + "</thumb>");
 				}
 			} else {
-				out.println("<aviso>Ainda não há nenhum vídeo recomendado para você</aviso>");
+				out.println("<aviso>Ainda nÃ£o hÃ¡ nenhum vÃ­deo recomendado para vocÃª.</aviso>");
 			}
 			
 			
@@ -71,7 +73,7 @@ public class ServletPedeRecomendacao extends HttpServlet {
 			out.println("<resposta>");
 			out.println("<mensagem>falha</mensagem>");
 			
-			out.println("<aviso>Falha na recuperação dos vídeos recomendados a você</aviso>");
+			out.println("<aviso>Falha na recuperaï¿½ï¿½o dos vï¿½deos recomendados a vocï¿½</aviso>");
 			out.println("</resposta>");
 		}
 	}

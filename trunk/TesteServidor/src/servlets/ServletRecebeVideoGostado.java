@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controle.ThreadControle;
 import controle.UsuarioControle;
 
 /**
@@ -30,8 +31,9 @@ public class ServletRecebeVideoGostado extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		UsuarioControle controle = UsuarioControle.getInstance();
+		ThreadControle.getInstance();
 		
-		System.out.println("Recebi um vídeo!");
+		System.out.println("Recebi um vï¿½deo!");
 		
 		String acao = request.getParameter("acao");
 		String video = request.getParameter("cod");
@@ -50,16 +52,16 @@ public class ServletRecebeVideoGostado extends HttpServlet {
 			if( temp[1].equals("youtube") ) {
 				
 				if ( acao.equalsIgnoreCase("gostar") ) {				
-					controle.insereVideoGostado(id, video);
+					controle.insereVideoGostado(id, video, true);
 					
 					response.getWriter().write("<mensagem>Adicionado!</mensagem>");
 				} else {
-					controle.insereVideoNaoGostado(id, video);
+					controle.insereVideoNaoGostado(id, video, true);
 					response.getWriter().write("<mensagem>Adicionado!</mensagem>");
 				}
 				
 			} else {
-				response.getWriter().write("<mensagem>Não é do Youtube!</mensagem>");
+				response.getWriter().write("<mensagem>Nï¿½o ï¿½ do Youtube!</mensagem>");
 			}
 		} else {
 			response.getWriter().write("<mensagem>Faltou algo!</mensagem>");

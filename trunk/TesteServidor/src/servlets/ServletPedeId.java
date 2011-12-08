@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controle.ThreadControle;
 import controle.UsuarioControle;
 
 /**
@@ -36,6 +37,7 @@ public class ServletPedeId extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UsuarioControle controle = UsuarioControle.getInstance();
+		ThreadControle.getInstance();
 
 		System.out.println("Pedindo um id");
 		

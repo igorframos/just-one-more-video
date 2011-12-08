@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import controle.ThreadControle;
 import controle.UsuarioControle;
 
 /**
@@ -32,8 +33,9 @@ public class ServletPedeGostados extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		UsuarioControle controle = UsuarioControle.getInstance();
+		ThreadControle.getInstance();
 		
-		System.out.println("Estou pedindo meus vídeos gostados!!");
+		System.out.println("Estou pedindo meus vï¿½deos gostados!!");
 		
 		String idTemp = request.getParameter("id");
 		int id;
