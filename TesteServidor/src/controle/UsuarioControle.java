@@ -43,6 +43,14 @@ public class UsuarioControle {
 		usuarios.put(id, new Usuario(id));
 	}
 	
+	public void insereVideoNaoGostado(int id, String video) {
+		if ( !existeCliente(id) ) {
+			criaUsuario(id);
+		}
+		
+		usuarios.get(id).acrescentaVideoNaoGostado(video);
+	}
+	
 	public void insereVideoGostado(int id, String video) {
 		if ( !existeCliente(id) ) {
 			criaUsuario(id);
