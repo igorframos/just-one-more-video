@@ -1,0 +1,1 @@
+Extensão para o Chrome criada como trabalho da disciplina Recuperação da Informação em 2011/2 por Gabriel Pires e Igor Ramos. A extensão é um sistema de recomendação de vídeos do youtube com base no gosto de cada usuário.
